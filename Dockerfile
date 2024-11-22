@@ -1,24 +1,19 @@
-# Build aşaması için Maven kullanımı
-FROM maven:3.8.5-openjdk-17-slim AS build
-WORKDIR /app
 
-# Proje dosyalarını kopyala
-COPY pom.xml .
-COPY src ./src
-COPY mvnw .
-COPY .mvn .mvn
+FROM maven:3-eclipse-temurin-17 AS build
 
-# Maven ile projeyi build et
-RUN ./mvnw clean package
 
-# Çalıştırma aşaması için yalnızca gerekli dosyaları kopyala
-FROM openjdk:17-jdk-slim
-WORKDIR /app
+COPY . .
 
-# Jar dosyasını kopyala
-COPY --from=build /app/target/*.jar app.jar
+RUN mvn clean package -DskipTests
 
-# Uygulamayı başlat
+
+FROM eclipse-temurin:17-alpine
+
+
+COPY --from=build target/*.jar demo.jar
+
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
 
+
+ENTRYPOINT ["java", "-jar", "demo.jar"]
