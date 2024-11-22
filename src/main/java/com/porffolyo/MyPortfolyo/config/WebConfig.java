@@ -14,6 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*").allowCredentials(true)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
-                .allowedOrigins("http://localhost:5173");
+                .allowedOrigins("http://localhost:5173","https://myportfolyo.onrender.com");
     }
 }
